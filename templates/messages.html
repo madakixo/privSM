@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="messages-page">
+  <h2>Your Chats</h2>
+  <div class="contacts">
+    {% for contact in contacts %}
+    <a href="{{ url_for('chat', username=contact.username) }}" class="contact">
+      <img src="{{ url_for('uploaded_file', filename=contact.profile_picture) }}" class="avatar">
+      <div>
+        <strong>@{{ contact.username }}</strong>
+        <small>{{ 'Online' if contact.is_online else 'Offline' }}</small>
+      </div>
+    </a>
+    {% else %}
+    <p>No messages yet. Start a chat!</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

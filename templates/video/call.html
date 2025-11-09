@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<div style="text-align:center;padding:2rem;">
+  <h2>Calling @{{callee.username}}…</h2>
+  <video id="local" autoplay muted playsinline style="width:300px;border-radius:12px;"></video>
+  <video id="remote" autoplay playsinline style="width:500px;border-radius:12px;"></video>
+  <br><button onclick="endCall()" style="background:#e74c3c;color:#fff;padding:12px 30px;border:none;border-radius:12px;margin-top:1rem;">End Call</button>
+</div>
+<script src="{{url_for('static',filename='js/video.js')}}"></script>
+<script>
+  const calleeId={{callee.id}};
+  socket.emit('call_user',{callee_id:calleeId});
+</script>
+{% endblock %}

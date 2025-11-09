@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="profile">
+  <div class="profile-header">
+    <img src="{{ url_for('uploaded_file', filename=user.profile_picture) }}" class="profile-pic">
+    <div>
+      <h1>@{{ user.username }}</h1>
+      <p>{{ user.email }}</p>
+      <small>Member since {{ user.posts[0].timestamp.strftime('%B %Y') if user.posts else 'Today' }}</small>
+    </div>
+  </div>
+
+  <h3>Posts ({{ user.posts|length }})</h3>
+  <div class="posts">
+    {% for post in posts %}
+    <div class="post">
+      <p>{{ post.content }}</p>
+      {% if post.media %}
+        <img src="{{ url_for('uploaded_file', filename=post.media) }}" class="post-media">
+      {% endif %}
+      <small>{{ post.timestamp.strftime('%b %d, %Y') }}</small>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

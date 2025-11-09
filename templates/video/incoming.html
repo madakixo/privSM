@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="incoming-call">
+  <h2>Incoming Call</h2>
+  <p><strong>@{{ caller.username }}</strong> is calling you</p>
+  <img src="{{ url_for('uploaded_file', filename=caller.profile_picture) }}" class="avatar large">
+  <div class="call-actions">
+    <button onclick="acceptCall()" class="btn-accept">Accept</button>
+    <button onclick="rejectCall()" class="btn-reject">Reject</button>
+  </div>
+</div>
+
+<script>
+  const callerId = {{ caller.id }};
+  function acceptCall() {
+    socket.emit('accept_call', { caller_id: callerId });
+    window.location.href = `/video/{{ caller.username }}`;
+  }
+  function rejectCall() {
+    socket.emit('reject_call', { caller_id: callerId });
+    window.location.href = '/messages';
+  }
+</script>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Admin Dashboard</h1>
+<h2>Users</h2>
+<table style="width:100%;border-collapse:collapse;">
+  <tr style="background:var(--p);color:#fff;">
+    <th>ID</th><th>User</th><th>Status</th><th>Actions</th>
+  </tr>
+  {% for u in users %}
+  <tr>
+    <td>{{u.id}}</td>
+    <td>@{{u.username}}{% if u.is_admin %} [ADMIN]{% endif %}</td>
+    <td>{% if u.is_online %}Online{% else %}Offline{% endif %} {% if u.is_banned %}BANNED{% endif %}</td>
+    <td>
+      {% if not u.is_admin %}
+        {% if u.is_banned %}
+          <a href="{{url_for('unban',uid=u.id)}}">Unban</a>
+        {% else %}
+          <form method="POST" action="{{url_for('ban',uid=u.id)}}" style="display:inline;">
+            <input name="reason" placeholder="reason" size="10">
+            <button style="background:#e67e22;color:#fff;border:none;padding:4px 8px;">Ban</button>
+          </form>
+        {% endif %}
+        <a href="{{url_for('delete',uid=u.id)}}" style="color:#c0392b;">Delete</a>
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+
+<h2>Moderation Logs</h2>
+<ul>
+  {% for l in logs %}
+  <li>
+    <strong>@{{ l.admin.username }}</strong> 
+    {{ l.action }} 
+    <strong>@{{ l.target.username }}</strong>
+    {% if l.reason %} – {{ l.reason }}{% endif %}
+    <small>{{ l.timestamp.strftime('%b %d, %H:%M') }}</small>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}

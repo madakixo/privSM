@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="banned-page">
+  <h1>Account Suspended</h1>
+  <p>Your account has been banned by an admin.</p>
+  <a href="{{ url_for('logout') }}" class="btn">Logout</a>
+</div>
+{% endblock %}

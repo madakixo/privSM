@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="premium">
+  <h1>XO Premium</h1>
+  <div class="plan">
+    <h2>₦2,500/month</h2>
+    <ul>
+      <li>Gold Badge</li>
+      <li>No Ads</li>
+      <li>Boost Stories</li>
+    </ul>
+    <button onclick="payNow()" class="btn-pay">Pay with Paystack</button>
+  </div>
+</div>
+
+<script src="https://js.paystack.co/v1/inline.js"></script>
+<script>
+function payNow() {
+  fetch('/pay', {method: 'POST'})
+    .then(r => r.json())
+    .then(data => {
+      if (data.url) {
+        let handler = PaystackPop.setup({
+          key: '{{ PAYSTACK_PUBLIC }}',
+          email: '{{ current_user.email }}',
+          amount: 250000,
+          ref: '{{ uuid.uuid4() }}',
+          onClose: () => alert('Closed'),
+          callback: () => location.href = '/verify?reference=' + data.ref
+        });
+        handler.openIframe();
+      }
+    });
+}
+</script>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>XO Feed</h1>
+
+<form method="POST" enctype="multipart/form-data">
+  <textarea name="content" placeholder="What's on your mind?" rows="3" style="width:100%;padding:12px;border-radius:12px;"></textarea>
+  <div style="margin:10px 0;">
+    <input type="file" name="media" accept="image/*,video/*">
+    <button type="submit" style="background:#00BFFF;color:white;padding:12px 24px;border:none;border-radius:12px;">Post</button>
+  </div>
+</form>
+
+<div class="posts">
+  {% for p in posts %}
+  <div class="post">
+    <div style="display:flex;gap:12px;align-items:center;margin-bottom:10px;">
+      <img src="{{ url_for('uploads', filename=p.author.profile_picture or 'default.png') }}" width="40" height="40" style="border-radius:50%;">
+      <div>
+        <strong>@{{ p.author.username }}</strong>
+        <small style="color:#666;">{{ p.timestamp.strftime('%b %d · %H:%M') }}</small>
+      </div>
+    </div>
+    <p>{{ p.content }}</p>
+    {% if p.media %}
+      {% if p.media.endswith(('.mp4','.webm','.ogg')) %}
+        <video controls style="max-width:100%;border-radius:12px;">
+          <source src="{{ url_for('uploads', filename=p.media) }}" type="video/mp4">
+        </video>
+      {% else %}
+        <img src="{{ url_for('uploads', filename=p.media) }}" style="max-width:100%;border-radius:12px;">
+      {% endif %}
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

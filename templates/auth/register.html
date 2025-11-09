@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Register • XO-Connects</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+<body class="login-body">
+  <div class="wave"></div>
+  <div class="login-card">
+    <h1 class="login-title">Join XO</h1>
+    <p class="login-subtitle">Create your account in seconds</p>
+
+    <form method="POST">
+      <div class="input-group">
+        <input type="text" name="username" class="input-field" placeholder="Choose username" required>
+      </div>
+      <div class="input-group">
+        <input type="email" name="email" class="input-field" placeholder="Your email" required>
+      </div>
+      <div class="input-group">
+        <input type="password" name="password" class="input-field" placeholder="Strong password" required>
+      </div>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for cat, msg in messages %}
+            <p style="color: yellow; font-weight:600;">{{ msg }}</p>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <button type="submit" class="login-btn">Create Account</button>
+    </form>
+
+    <p class="register-link">
+      Already have account? <a href="{{ url_for('login') }}" style="color:#87CEEB; font-weight:700;">Login</a>
+    </p>
+  </div>
+</body>
+</html>
